@@ -1,16 +1,13 @@
 
 #include "pch.h"
-#include <windows.h>
-#include <string>
 #include "BatteryPower.h"
-#include <powerbase.h>
 #include "DataManager.h"
 
 CBatteryPowerPlugin::CBatteryPowerPlugin() {
 }
 
 const wchar_t* CBatteryPowerPlugin::GetItemName() const {
-    return L"BRate";
+    return L"Battery Power Rate";
 }
 
 const wchar_t* CBatteryPowerPlugin::GetItemId() const {
@@ -18,7 +15,7 @@ const wchar_t* CBatteryPowerPlugin::GetItemId() const {
 }
 
 const wchar_t* CBatteryPowerPlugin::GetItemLableText() const {
-    return L"";
+    return L"PWR:";
 }
 
 const wchar_t* CBatteryPowerPlugin::GetItemValueText() const {
