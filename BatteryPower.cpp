@@ -15,7 +15,7 @@ const wchar_t* CBatteryPowerPlugin::GetItemId() const {
 }
 
 const wchar_t* CBatteryPowerPlugin::GetItemLableText() const {
-    return L"PWR:";
+    return L"P:";
 }
 
 const wchar_t* CBatteryPowerPlugin::GetItemValueText() const {

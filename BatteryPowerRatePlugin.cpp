@@ -32,7 +32,7 @@ DEFINE_GUID(GUID_DEVCLASS_BATTERY, 0x72631E54L, 0x78A4, 0x11D0, 0xBC, 0xF7, 0x00
 
 std::wstring GetBatteryPowerRate()
 {
-    std::wstring result = L"0 W";
+    std::wstring result = L"0.00 W";
     HDEVINFO hdev = SetupDiGetClassDevs(&GUID_DEVCLASS_BATTERY, 0, 0, DIGCF_PRESENT | DIGCF_DEVICEINTERFACE);
     if (hdev == INVALID_HANDLE_VALUE)
         return result;
@@ -40,7 +40,8 @@ std::wstring GetBatteryPowerRate()
     SP_DEVICE_INTERFACE_DATA did = { 0 };
     did.cbSize = sizeof(did);
 
-    int totalRate = 0;
+    // Use double for higher precision
+    double totalRateMilliwatts = 0.0;
     bool foundBattery = false;
 
     // Enumerate all batteries in the system
@@ -79,16 +80,33 @@ std::wstring GetBatteryPowerRate()
         if (DeviceIoControl(hBattery, IOCTL_BATTERY_QUERY_TAG, &dwWait, sizeof(dwWait), &bqi.BatteryTag, sizeof(bqi.BatteryTag), &dwOut, NULL)
             && bqi.BatteryTag)
         {
-            // Now get the battery status
+            // Now get the battery status - try multiple times to ensure accuracy
             BATTERY_WAIT_STATUS bws = { 0 };
             bws.BatteryTag = bqi.BatteryTag;
 
             BATTERY_STATUS bs = { 0 };
-            if (DeviceIoControl(hBattery, IOCTL_BATTERY_QUERY_STATUS, &bws, sizeof(bws), &bs, sizeof(bs), &dwOut, NULL))
+
+            // Get an accurate reading by averaging multiple samples
+            const int NUM_SAMPLES = 3;
+            int validSamples = 0;
+
+            for (int sample = 0; sample < NUM_SAMPLES; sample++)
             {
-                // Rate is positive when charging, negative when discharging
-                totalRate += bs.Rate;
-                foundBattery = true;
+                if (DeviceIoControl(hBattery, IOCTL_BATTERY_QUERY_STATUS, &bws, sizeof(bws), &bs, sizeof(bs), &dwOut, NULL))
+                {
+                    totalRateMilliwatts += bs.Rate;
+                    validSamples++;
+                    foundBattery = true;
+                }
+
+                // Small delay between samples
+                Sleep(50);
+            }
+
+            // Average the readings if we got more than one
+            if (validSamples > 1)
+            {
+                totalRateMilliwatts /= validSamples;
             }
         }
         CloseHandle(hBattery);
@@ -97,16 +115,24 @@ std::wstring GetBatteryPowerRate()
 
     if (foundBattery)
     {
-        // Convert milliwatts to watts and format
-        double watts = totalRate / 1000.0;
+        // Convert milliwatts to watts with high precision
+        double watts = totalRateMilliwatts / 1000.0;
+
+        wchar_t buffer[32];
 
         // Use different format based on charging or discharging
-        if (watts > 0)
-            result = std::to_wstring((int)(watts + 0.5)) + L" W+"; // Charging (positive)
-        else if (watts < 0)
-            result = std::to_wstring((int)(-watts + 0.5)) + L" W-"; // Discharging (negative)
-        else
-            result = L"0 W"; // No power flow
+        // Include 2 decimal places as requested
+        if (watts > 0) {
+            swprintf_s(buffer, L"%.2f W+", watts); // Charging (positive)
+            result = buffer;
+        }
+        else if (watts < 0) {
+            swprintf_s(buffer, L"%.2f W-", -watts); // Discharging (negative)
+            result = buffer;
+        }
+        else {
+            result = L"0.00 W"; // No power flow
+        }
     }
 
     return result;
