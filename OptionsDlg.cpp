@@ -2,7 +2,7 @@
 //
 
 #include "pch.h"
-#include "PluginDemo.h"
+#include "BatteryPowerRatePlugin.h"
 #include "OptionsDlg.h"
 #include "afxdialogex.h"
 

@@ -1,5 +1,5 @@
 ﻿#include "pch.h"
-#include "PluginDemo.h"
+#include "BatteryPowerRatePlugin.h"
 #include "DataManager.h"
 #include "OptionsDlg.h"
 
