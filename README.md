@@ -42,7 +42,3 @@ Head over to the [Releases](https://github.com/biplobsd/BatteryPowerRatePluginFo
 4. Build the project.
 5. The output `BatteryPowerRatePlugin.dll` will appear in the `Release` folder.
 
-## 📄 License
-
-This project is licensed under the [MIT License](LICENSE).
-
