@@ -21,25 +21,10 @@
     <ClInclude Include="pch.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="PluginSystemTime.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="PluginSystemDate.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="BatteryPowerRatePlugin.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="DataManager.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="resource.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="OptionsDlg.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="CustomDrawItem.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="BatteryPower.h">
@@ -53,31 +38,14 @@
     <ClCompile Include="pch.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="PluginSystemTime.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="PluginSystemDate.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="DataManager.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="OptionsDlg.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="BatteryPowerRatePlugin.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="CustomDrawItem.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="BatteryPower.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="BatteryPowerRatePlugin.rc">
-      <Filter>资源文件</Filter>
-    </ResourceCompile>
   </ItemGroup>
 </Project>
